@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo App</title>
+  <meta name="description" content="advanced todo app for jobs and orginations for Acunmedya Akademi tasks" />
+  <!-- google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Asset Links -->
+  <link rel="stylesheet" href="/main.css">
+  <script type="module" src="/main.js" defer></script>
+</head>
+<body>
+  <h1 class="page-title">Stuff I need to do</h1>
+
+  <div class="all-lists">
+    <h2 class="all-lists-head">My Lists</h2>
+
+    <ul class="lists" data-lists></ul>
+
+    <form data-lists-form>
+      <input 
+        type="text" class="lists-input" 
+        data-list-input 
+        placeholder="new list name"
+        aria-label="new list name" 
+      />
+      <button class="lists-btn" data-add-list aria-label="new list add">+</button>
+    </form>
+  </div>
+
+  <div class="all-tasks hidden" data-tasks-display>
+    <!-- todo header -->
+    <div class="todo-header">
+      <h2 class="task-title" data-list-title aria-label="task title"></h2>
+      <h2 class="task-count" data-list-count aria-label="task count"></h2>
+    </div>
+
+    <div class="todo-body">
+      <!-- tasks render -->
+      <ul class="tasks" data-tasks></ul>
+
+      <!-- task creator -->
+      <div class="task-creator">
+        <form data-tasks-form>
+          <input 
+            type="text" class="lists-input" 
+            data-task-input 
+            placeholder="new task name"
+            aria-label="new task name" 
+          />
+          <button class="lists-btn" data-add-task aria-label="new task name">+</button>
+        </form>
+      </div>
+
+      <button class="complete-btn" data-get-tasks-complete aria-label="get completed tasks">get complete tasks</button>
+    </div>
+  </div>
+</body> 
+</html>

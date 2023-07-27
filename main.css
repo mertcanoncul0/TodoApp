@@ -1,0 +1,371 @@
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+/*
+  2. Remove default margin
+*/
+* {
+    margin: 0;
+    padding: 0;
+}
+/*
+  Typographic tweaks!
+  3. Add accessible line-height
+  4. Improve text rendering
+*/
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+/*
+  5. Improve media defaults
+*/
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+/*
+  6. Remove built-in form typography styles
+*/
+input, button, textarea, select {
+    font: inherit;
+    outline: none;
+}
+/*
+  7. Avoid text overflows
+*/
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+/* 
+  8. scroll-behavior
+*/
+html {
+    scroll-behavior: smooth;
+}
+
+/* 
+  9. reset tag
+*/
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    background: none;
+    border: none;
+}
+
+/* General Settings */
+body {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    background-color: hsl(216, 68%, 52%);
+    color: hsl(0, 0%, 96%);
+
+    display: grid;
+    grid: 
+        "header header header header" auto
+        "...... lists  tasks  ......" auto /
+        1fr minmax(100px, 300px) minmax(250px, 500px) 1fr;
+}
+
+.page-title {
+    grid-area: header;
+    text-align: center;
+    font-size: calc(6vw + 2rem);
+    font-weight: 900;
+    color: hsla(0, 0%, 0%, 0.1);
+    letter-spacing: 2px;
+    margin-block: -0.3em .7em;
+}
+
+.all-lists {
+    grid-area: lists;
+}
+
+.all-lists-head {
+    font-size: calc(1vw + 1rem);
+    font-weight: 700;
+}
+
+.lists {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    list-style: circle;
+    padding-left: 1.1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-item {
+    cursor: pointer;
+    transition: opacity 100ms ease-in-out;
+    max-width: 200px;
+}
+
+.list-item.active-list .list-name{
+    font-weight: 700;
+}
+
+.list-item .list-name:is(:focus, :hover) {
+    opacity: 0.6;
+}
+
+.list-item button {
+    display: none;
+    max-width: 20px;
+    cursor: pointer;
+}
+
+.list-item:hover button{
+    display: block;
+    transition: opacity 70ms ease-in-out;
+}
+
+.list-item .list-name {
+    flex-grow: 1;
+}
+
+.list-item-wrapper {
+    display: flex;
+    gap: 8px;
+}
+
+.list-item-wrapper button:hover {
+    opacity: 0.8;
+}
+
+[data-lists-form],
+[data-tasks-form] {
+    display: flex;
+}
+
+.lists-btn {
+    cursor: pointer;
+    color: inherit;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-right: 0.25em;
+    transition: opacity 250ms ease-in;
+}
+
+.lists-btn:is(:focus, :hover) {
+    opacity: 0.7;
+}
+
+.lists-input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid currentColor;
+    font-size: 1.1rem;
+    transition: border-bottom 150ms ease-in-out;
+    order: 2;
+    color: currentColor;
+}
+
+.lists-input:focus {
+    border-bottom-width: 3px;
+}
+
+.lists-input::placeholder {
+    color: currentColor;
+    opacity: 0.6;
+}
+
+.lists-input::placeholder:focus {
+    opacity: 0.4;
+}
+
+.all-tasks {
+    --spacer: 2rem;
+
+    grid-area: tasks;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 0%);
+}
+
+.todo-header {
+    padding: var(--spacer);
+    background-color: hsl(0, 0%, 89%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task-title {
+    margin-right: 1em;
+    font-size: calc(1vw + 1rem);
+    font-weight: 500;
+}
+
+.task-count {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.todo-body {
+    padding: var(--spacer);
+    position: relative;
+}
+
+.task-creator {
+    margin-bottom: 2em;
+}
+
+.task-creator .lists-btn {
+    color: hsl(216, 68%, 52%);;
+}
+
+[type="checkbox"] {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.task label {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.task {
+    position: relative;
+    margin-bottom: 1.25em;
+    display: flex;
+}
+
+.task::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: -0.5em;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.1;
+}
+
+.custom-checkbox {
+    --size: 0.75em;
+    display: inline-block;
+    width: var(--size);
+    height: var(--size);
+    margin-right: var(--size);
+    cursor: pointer;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    transform: scale(1);
+    transition: transform 300ms ease-in-out;
+}
+
+.task:hover .custom-checkbox,
+[type="checkbox"]:focus + label .custom-checkbox {
+    transform: scale(1.2);
+    color: hsl(216, 68%, 52%);
+}
+
+[type="checkbox"]:checked + label .custom-checkbox {
+    background-color: hsl(216, 68%, 52%);
+    border-color: hsl(216, 68%, 52%);
+    box-shadow: inset 0 0 0 2px whitesmoke;
+}
+
+[type="checkbox"]:checked + label {
+    opacity: 0.6;
+}
+
+.task label::after {
+    content: '';
+    position: absolute;
+    left: 1.5em;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 150ms ease-in-out;
+}
+
+[type="checkbox"]:checked + label::after {
+    transform: scale(1);
+    transform-origin: left;
+}
+
+.task-btns{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+
+.task button {
+    display: none;
+    max-width: 20px;
+    cursor: pointer;
+    transition: opacity 70ms ease-in-out;
+}
+
+.task button:hover {
+    opacity: 0.6;
+}
+
+.task:hover button{
+    display: block;
+}
+
+.complete-btn {
+    font-size: 1rem;
+    font-weight: 300;
+    cursor: pointer;
+    margin-right: 0;
+}
+
+.complete-btn:is(:focus, :hover) {
+    border-bottom: 1px solid currentColor;
+} 
+
+.hidden {
+    display: none !important;
+}
+
+@media (width <= 1024px) {
+    .task button{
+        display: block !important;
+    }
+
+    .list-item button{
+        display: block !important;
+    }
+}
+
+@media (width <= 900px) {
+    body {
+        grid: 
+        "header header header header" auto
+        "...... lists  lists  ......" auto 
+        "...... tasks  tasks  ......" auto /
+        1fr minmax(100px, 300px) minmax(250px, 500px) 1fr;
+
+        place-items: center;
+        gap: 1em;
+    }
+}
