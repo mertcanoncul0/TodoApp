@@ -8,6 +8,8 @@ const taskForm = document.querySelector('[data-tasks-form]');
 const taskInput = document.querySelector('[data-task-input]');
 const tasksContainer = document.querySelector('[data-tasks]');
 const getCompleteBtn = document.querySelector('[data-get-tasks-complete]');
+const listTemplate = document.querySelector('[data-list-template]');
+const taskTemplate = document.querySelector('[data-task-template]');
 
 let lists = JSON.parse(localStorage.getItem('lists')) || [];
 let selectedListId = localStorage.getItem('selectedListId') || '';
@@ -39,8 +41,8 @@ function listSubmitHandler(e) {
   e.preventDefault();
 
   if (listInput.value === '' || listInput.value === null) { return; }
+  
   lists.push(createList(listInput.value));
-
   listInput.value = '';
   listInput.focus();
   saveAndRender();
@@ -109,12 +111,16 @@ function editListHandler() {
   });
 
   const editInput = document.createElement('input');
+  const editButton = document.createElement('button');
+  editButton.innerHTML = '+'
+  editButton.classList.add('lists-btn');
   editInput.classList.add('lists-input');
   editInput.placeholder = 'enter new list name';
+  this.parentElement.appendChild(editButton);
   this.parentElement.appendChild(editInput);
   editInput.focus();
 
-  editInput.addEventListener('keydown', e => {
+  editInput.addEventListener('keydown', () => {
     if (e.key === 'Enter') {
       const clickedListId = this.parentElement.parentElement.dataset.listId;
 
@@ -126,10 +132,26 @@ function editListHandler() {
       })
     }
   });
+
+  editButton.addEventListener('click', () => {
+      const clickedListId = this.parentElement.parentElement.dataset.listId;
+
+      lists.filter(list => {
+        if (list.id === clickedListId) {
+          list.name = editInput.value !== '' ? editInput.value : list.name;
+          saveAndRender();
+        }
+      })
+    }
+  );
 }
 
 function editTaskHandler() {
   const parentElement = this.parentElement.parentElement;
+  const editButton = document.createElement('button');
+  editButton.innerHTML = '+'
+  editButton.classList.add('lists-btn');
+
   const label = parentElement.querySelector('label');
   const div = parentElement.querySelector('div');
   div.classList.add('hidden');
@@ -139,6 +161,7 @@ function editTaskHandler() {
   editInput.classList.add('lists-input');
   editInput.placeholder = 'enter new task name';
   this.parentElement.parentElement.appendChild(editInput);
+  this.parentElement.parentElement.appendChild(editButton);
   editInput.focus();
 
   editInput.addEventListener('keydown', e => {
@@ -153,119 +176,72 @@ function editTaskHandler() {
       });
     }
   });
+
+  editButton.addEventListener('click', () => {
+    const clickedListId = parentElement.querySelector('label').htmlFor;
+
+    selectedList().tasks.filter(task => {
+      if (task.id === clickedListId) {
+        task.name = editInput.value !== '' ? editInput.value : task.name;
+        saveAndRender();
+      }
+    });
+  })
 }
 
 function renderLists() {
   lists.forEach(list => {
+    const listElementTemplate = document.importNode(listTemplate.content, true);
+    
     // list element
-    const listElement = document.createElement('li');
-    listElement.classList.add('list-item');
+    const listElement = listElementTemplate.querySelector('li');
     listElement.dataset.listId = list.id;
     if (list.id === selectedListId) { listElement.classList.add('active-list'); }
 
-    // div element
-    const divElement = document.createElement('div');
-    divElement.classList.add('list-item-wrapper');
-
     // list name
-    const listName = document.createElement('span');
-    listName.classList.add('list-name');
+    const listName = listElementTemplate.querySelector('.list-name');
     listName.innerHTML = list.name;
     listName.dataset.listId = list.id;
 
     // buttons
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('delete-list-btn');
-    const editButton = document.createElement('button');
-    editButton.classList.add('edit-list-btn');
+    const editButton = listElementTemplate.querySelector('.edit-list-btn');
+    const deleteButton  = listElementTemplate.querySelector('.delete-list-btn');
 
     // events
     deleteButton.addEventListener('click', deleteListHandler);
     editButton.addEventListener('click', editListHandler);
 
-    // Icons
-    const deleteIcon = document.createElement('img');
-    deleteIcon.src = 'icons/listTrash.svg';
-    const editIcon = document.createElement('img');
-    editIcon.src = 'icons/listEdit.svg';
-
-    // * appends
-    // button icons
-    deleteButton.appendChild(deleteIcon);
-    editButton.appendChild(editIcon);
-
-    // div element
-    divElement.appendChild(listName);
-    divElement.appendChild(editButton);
-    divElement.appendChild(deleteButton);
-
-    // list element
-    listElement.appendChild(divElement);
-
-    listsContainer.appendChild(listElement);
+    // append
+    listsContainer.appendChild(listElementTemplate);
   });
 }
 
 function renderTasks() {
   selectedList().tasks.forEach(task => {
-    // list element
-    const taskElement = document.createElement('li');
-    taskElement.classList.add('task');
+    // task element
+    const taskElement = document.importNode(taskTemplate.content, true);
 
     // checkbox element
-    const checkboxElement = document.createElement('input');
-    checkboxElement.type = 'checkbox';
+    const checkboxElement = taskElement.querySelector('input');
     checkboxElement.id = task.id;
     checkboxElement.checked = task.isComplete;
 
     // label and span element
-    const labelElement = document.createElement('label');
+    const labelElement = taskElement.querySelector('label');
     labelElement.htmlFor = task.id;
-    const spanElement = document.createElement('span');
-    const spanElementName = document.createElement('span');
-    spanElementName.innerHTML = task.name
-    spanElement.classList.add('custom-checkbox');
 
-    // div
-    const divElement = document.createElement('div');
-    divElement.classList.add('task-btns');
+    const spanElementName = taskElement.querySelector('.task-name');
+    spanElementName.innerHTML = task.name
 
     // buttons
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('delete-list-btn');
-    const editButton = document.createElement('button');
-    editButton.classList.add('edit-list-btn');
-
-    // Icons
-    const deleteIcon = document.createElement('img');
-    deleteIcon.src = 'icons/taskTrash.svg';
-    const editIcon = document.createElement('img');
-    editIcon.src = 'icons/taskEdit.svg';
+    const deleteButton = taskElement.querySelector('.delete-list-btn');
+    const editButton = taskElement.querySelector('.edit-list-btn');
 
     // events
     editButton.addEventListener('click', editTaskHandler);
     deleteButton.addEventListener('click', deleteTaskHandler);
 
     // * appends
-    // list element
-    taskElement.appendChild(checkboxElement);
-
-    // label element
-    labelElement.appendChild(spanElement);
-    labelElement.appendChild(spanElementName);
-    taskElement.appendChild(labelElement);
-    
-    // button elements 
-    deleteButton.appendChild(deleteIcon);
-    editButton.appendChild(editIcon); 
-
-    // div element
-    divElement.appendChild(editButton);
-    divElement.appendChild(deleteButton);
-    
-    // list element
-    taskElement.appendChild(divElement);
-
     tasksContainer.appendChild(taskElement);
   })
 } 

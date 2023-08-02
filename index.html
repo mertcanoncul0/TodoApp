@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;700;900&display=swap" rel="stylesheet">
-  
   <!-- Asset Links -->
   <link rel="stylesheet" href="/main.css">
   <script type="module" src="/main.js" defer></script>
@@ -61,5 +60,41 @@
       <button class="complete-btn" data-get-tasks-complete aria-label="get completed tasks">get complete tasks</button>
     </div>
   </div>
+
+
+  <!-- Templates -->
+  <!-- List -->
+  <template data-list-template>
+    <li class="list-item">
+      <div class="list-item-wrapper">
+        <span class="list-name">Selam</span>
+          <button class="edit-list-btn">
+            <img src="/icons/listEdit.svg">
+          </button>
+          <button class="delete-list-btn">
+            <img src="/icons/listTrash.svg">
+          </button>
+        </div>
+      </li>
+  </template>
+
+  <!-- Task -->
+  <template data-task-template>
+    <li class="task">
+      <input type="checkbox">
+      <label>
+        <span class="custom-checkbox"></span>
+        <span class="task-name"></span>
+      </label>
+      <div class="task-btns">
+        <button class="edit-list-btn">
+          <img src="icons/taskEdit.svg">
+        </button>
+        <button class="delete-list-btn">
+          <img src="icons/taskTrash.svg">
+        </button>
+      </div>
+    </li>
+  </template>
 </body> 
 </html>

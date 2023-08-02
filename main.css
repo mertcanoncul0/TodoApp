@@ -122,7 +122,7 @@ body {
     opacity: 0.6;
 }
 
-.list-item button {
+.list-item button:not(.lists-btn) {
     display: none;
     max-width: 20px;
     cursor: pointer;
@@ -154,7 +154,7 @@ body {
 .lists-btn {
     cursor: pointer;
     color: inherit;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 900;
     margin-right: 0.25em;
     transition: opacity 250ms ease-in;
@@ -317,7 +317,7 @@ body {
 }
 
 
-.task button {
+.task button:not(.lists-btn) {
     display: none;
     max-width: 20px;
     cursor: pointer;
@@ -367,5 +367,10 @@ body {
 
         place-items: center;
         gap: 1em;
+    }
+
+    .lists-btn {
+        font-size: 3rem;
+        width: 48px;
     }
 }
